@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Directory</title>
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --glass-bg: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-gradient: linear-gradient(90deg, #38bdf8, #818cf8);
+            --btn-gradient: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            --btn-hover-gradient: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+            --table-hover-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 3rem 1rem;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .glass-container {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2.5rem;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .gradient-title {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        .btn-premium {
+            background: var(--btn-gradient);
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-premium:hover {
+            background: var(--btn-hover-gradient);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            color: #ffffff;
+        }
+
+        .btn-edit {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-edit:hover {
+            background: #38bdf8;
+            color: #0f172a;
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 8px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: #ffffff;
+            border-color: #ef4444;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .table-responsive {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(15, 23, 42, 0.3);
+        }
+
+        .table {
+            margin-bottom: 0;
+            color: var(--text-primary);
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: rgba(15, 23, 42, 0.6) !important;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+        }
+
+        .table td {
+            padding: 1.25rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.95rem;
+        }
+
+        .table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--table-hover-bg);
+        }
+
+        .table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state i {
+            color: rgba(148, 163, 184, 0.25);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Avatar styles */
+        .avatar-circle {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            color: #ffffff;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            margin-right: 12px;
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+            <div>
+                <h1 class="gradient-title mb-1">Employee Directory</h1>
+                <p class="subtitle mb-0">Manage information, addresses, and details of all employees</p>
+            </div>
+            <div>
+                <a href="{% url 'emp_create' %}" class="btn btn-premium">
+                    <i class="fa-solid fa-user-plus me-2"></i>Add Employee
+                </a>
+            </div>
+        </div>
+
+        {% if employees %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Employee Name</th>
+                            <th>Email Address</th>
+                            <th>Location / Address</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in employees %}
+                            <tr>
+                                <td>
+                                    <span class="fw-semibold text-info">#{{ emp.emp_id }}</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle">
+                                            {{ emp.emp_name|slice:":1"|upper }}
+                                        </div>
+                                        <span class="fw-medium">{{ emp.emp_name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="mailto:{{ emp.emp_email }}" class="text-decoration-none text-light opacity-75 hover-opacity-100">
+                                        <i class="fa-regular fa-envelope me-2 text-secondary"></i>{{ emp.emp_email }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="text-secondary"><i class="fa-solid fa-location-dot me-2 text-secondary opacity-50"></i>{{ emp.emp_address }}</span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{% url 'emp_edit' emp.id %}" class="btn-edit me-2">
+                                        <i class="fa-solid fa-user-pen me-1.5"></i>Edit
+                                    </a>
+                                    <a href="{% url 'emp_delete' emp.id %}" class="btn-delete" onclick="return confirm('Are you sure you want to delete {{ emp.emp_name }}?');">
+                                        <i class="fa-solid fa-trash-can me-1.5"></i>Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="mb-3">
+                    <i class="fa-solid fa-users-slash fa-4x"></i>
+                </div>
+                <h4 class="fw-semibold">No Employee Records Found</h4>
+                <p class="text-secondary mx-auto mb-4" style="max-width: 360px;">The database is currently empty. Get started by adding your first employee record.</p>
+                <a href="{% url 'emp_create' %}" class="btn btn-premium btn-sm">
+                    <i class="fa-solid fa-user-plus me-2"></i>Add First Employee
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
