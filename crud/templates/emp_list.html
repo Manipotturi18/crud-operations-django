@@ -269,13 +269,22 @@
 
 <body>
     <div class="glass-card animated-card">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4 pb-3 border-bottom border-secondary border-opacity-10">
             <div>
                 <h2 class="gradient-title m-0"><i class="fa-solid fa-users me-2 text-info"></i>Employee Directory</h2>
                 <p class="subtitle m-0 mt-1">Manage employee records and details</p>
             </div>
-            <div>
-                <a href="{% url 'emp_create' %}" class="btn btn-premium">
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                {% if user.is_authenticated %}
+                <div class="text-end me-2">
+                    <span class="text-secondary small d-block">Logged in as</span>
+                    <span class="fw-bold text-info"><i class="fa-solid fa-circle-user me-1 text-info"></i>{{ user.username }}</span>
+                </div>
+                <a href="{% url 'logout' %}" class="btn btn-action-delete py-2">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>Logout
+                </a>
+                {% endif %}
+                <a href="{% url 'emp_create' %}" class="btn btn-premium py-2">
                     <i class="fa-solid fa-user-plus"></i>Add Employee
                 </a>
             </div>
